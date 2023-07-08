@@ -33,7 +33,12 @@ jobs:
     steps:
       - id: set_values
         run: |
-          echo "::set-output name=mapped_value::$(echo '{"a": "a_value", "b": "b_value"}' | jq -r '.${{ env.ENV }}')"
+          declare -A dict
+          dict=(
+            ["a"]="a_value"
+            ["b"]="b_value"
+          )
+          echo "::set-output name=mapped_value::${dict['a']}"
         shell: bash
       - id: set_env
         run: |
