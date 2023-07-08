@@ -60,5 +60,5 @@ jobs:
     steps:
       - id: echo
         run: |
-          echo "${{ needs.prepare.outputs.mapped_value }} ${{ needs.prepare.outputs.env }} ${{ needs.prepare.outputs.target }}"
+          echo "${{ needs.prepare.outputs.mapped_value }} ${{ needs.prepare.outputs.env }} ${{ needs.prepare.outputs.target }} ${{ needs.prepare.outputs.parent }}"
 
