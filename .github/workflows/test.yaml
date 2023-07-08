@@ -1,0 +1,54 @@
+name: test workflow_dispatch
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        type: choice
+        description: Environment name (a, b)
+        required: true
+        default: "a"
+        options:
+          - a
+          - b
+      target:
+        type: choice
+        description: Target project
+        required: true
+        options:
+          - a_project
+          - b_project
+
+env:
+  ENV: ${{ github.event.inputs.env }}
+  TARGET: ${{ github.event.inputs.target }}
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      mapped_value: ${{ steps.set_value.outputs.mapped_value }}
+      env: ${{ steps.set_env.outputs.env }}
+      target: ${{ steps.set_target.outputs.target }}
+    steps:
+      - id: set_values
+        run: |
+          echo "::set-output name=mapped_value::$(echo '{"a": "a_value", "b": "b_value"}' | jq -r '.${{ env.ENV }}')"
+        shell: bash
+      - id: set_env
+        run: |
+          echo "::set-output name=env::$(echo ${{ env.ENV }})"
+        shell: bash
+      - id: set_target
+        run: |
+          echo "::set-output name=target::$(echo ${{ env.TARGET }})"
+        shell: bash
+
+  run:
+    runs-on: ubuntu-latest
+    needs: prepare
+    steps:
+      - id: echo
+        run: |
+          echo "${{ needs.prepare.outputs.mapped_value }} ${{ needs.prepare.outputs.env }} ${{ needs.prepare.outputs.target }}"
+
