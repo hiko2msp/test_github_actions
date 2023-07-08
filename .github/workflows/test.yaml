@@ -27,7 +27,7 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     outputs:
-      mapped_value: ${{ steps.set_value.outputs.mapped_value }}
+      mapped_value: ${{ steps.set_values.outputs.mapped_value }}
       env: ${{ steps.set_env.outputs.env }}
       target: ${{ steps.set_target.outputs.target }}
     steps:
@@ -38,6 +38,10 @@ jobs:
             ["a"]="a_value"
             ["b"]="b_value"
           )
+          echo "${dict['a']}"
+          echo "${dict['b']}"
+          echo "${dict['${{ env.ENV }}']}"
+          echo "mapped_value=${dict['a']}"
           echo "mapped_value=${dict['a']}" >> "$GITHUB_OUTPUT"
         shell: bash
       - id: set_env
@@ -46,7 +50,7 @@ jobs:
         shell: bash
       - id: set_target
         run: |
-          echo "env=${{ env.TARGET }}" >> "$GITHUB_OUTPUT"
+          echo "target=${{ env.TARGET }}" >> "$GITHUB_OUTPUT"
         shell: bash
 
   run:
