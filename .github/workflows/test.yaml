@@ -38,7 +38,7 @@ jobs:
             ["a"]="a_value"
             ["b"]="b_value"
           )
-          echo "${dict['${{ env.ENV }}']}" >> "$GITHUB_OUTPUT"
+          echo "mapped_value=${dict['${{ env.ENV }}']}" >> "$GITHUB_OUTPUT"
         shell: bash
       - id: set_env
         run: |
