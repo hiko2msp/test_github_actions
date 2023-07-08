@@ -38,15 +38,15 @@ jobs:
             ["a"]="a_value"
             ["b"]="b_value"
           )
-          echo "::set-output name=mapped_value::${dict['a']}"
+          echo "mapped_value=${dict['a']}" >> "$GITHUB_OUTPUT"
         shell: bash
       - id: set_env
         run: |
-          echo "::set-output name=env::$(echo ${{ env.ENV }})"
+          echo "env=${{ env.ENV }}" >> "$GITHUB_OUTPUT"
         shell: bash
       - id: set_target
         run: |
-          echo "::set-output name=target::$(echo ${{ env.TARGET }})"
+          echo "env=${{ env.TARGET }}" >> "$GITHUB_OUTPUT"
         shell: bash
 
   run:
