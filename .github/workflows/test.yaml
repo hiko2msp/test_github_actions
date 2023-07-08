@@ -28,8 +28,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       mapped_value: ${{ steps.set_values.outputs.mapped_value }}
-      env: ${{ steps.set_env.outputs.env }}
+      env: ${{ steps.set_values.outputs.env }}
       target: ${{ steps.set_target.outputs.target }}
+      parent: ${{ steps.set_target.outputs.parent }}
     steps:
       - id: set_values
         run: |
@@ -38,15 +39,19 @@ jobs:
             ["a"]="a_value"
             ["b"]="b_value"
           )
-          echo "mapped_value=${dict['${{ env.ENV }}']}" >> "$GITHUB_OUTPUT"
-        shell: bash
-      - id: set_env
-        run: |
           echo "env=${{ env.ENV }}" >> "$GITHUB_OUTPUT"
+          echo "mapped_value=${dict['${{ env.ENV }}']}" >> "$GITHUB_OUTPUT"
         shell: bash
       - id: set_target
         run: |
           echo "target=${{ env.TARGET }}" >> "$GITHUB_OUTPUT"
+          if [[ "${{ env.TARGET }}" = "a_project" ]]; then
+            echo "parent=a_parent" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ env.TARGET }}" = "b_project" ]]; then
+            echo "parent=b_parent" >> "$GITHUB_OUTPUT"
+          else
+            echo "parent=other" >> "$GITHUB_OUTPUT"
+          fi
         shell: bash
 
   run:
