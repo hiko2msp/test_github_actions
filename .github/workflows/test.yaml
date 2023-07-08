@@ -44,7 +44,9 @@ jobs:
         shell: bash
       - id: set_target
         run: |
+          # コメントは大丈夫かな？
           echo "target=${{ env.TARGET }}" >> "$GITHUB_OUTPUT"
+          # コメントは大丈夫かな？
           if [[ "${{ env.TARGET }}" = "a_project" ]]; then
             echo "parent=a_parent" >> "$GITHUB_OUTPUT"
           elif [[ "${{ env.TARGET }}" = "b_project" ]]; then
